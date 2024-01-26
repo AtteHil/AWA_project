@@ -16,6 +16,7 @@ const jwtOptions = {
 const jwtStrategy = new passport_jwt_1.Strategy(jwtOptions, async (payload, done) => {
     try {
         const user = await Users_1.User.findById(payload.id);
+        // If user is found, authenticate the user
         if (user) {
             return done(null, user);
         }

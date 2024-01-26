@@ -23,15 +23,17 @@ var __importStar = (this && this.__importStar) || function (mod) {
     return result;
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.User = void 0;
+exports.Match = void 0;
 const mongoose_1 = __importStar(require("mongoose"));
-let userSchema = new mongoose_1.Schema({
-    email: { type: String, required: true },
-    username: { type: String, required: true },
-    password: { type: String, required: true },
-    information: { type: String, required: true },
-    registerationdate: { type: String, required: true },
-    liked: { type: [String], default: [] } // initial liked array empty
+const messageSchema = new mongoose_1.Schema({
+    userId: { type: String, required: true },
+    message: { type: String, required: true },
+    date: { type: Date, required: true },
 });
-const User = mongoose_1.default.model('User', userSchema);
-exports.User = User;
+let MatchesSchema = new mongoose_1.Schema({
+    userOne: { type: String },
+    userTwo: { type: String },
+    chatLog: [messageSchema]
+});
+const Match = mongoose_1.default.model('Match', MatchesSchema);
+exports.Match = Match;

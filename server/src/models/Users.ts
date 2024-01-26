@@ -1,7 +1,9 @@
-import mongoose, { Document, Schema } from "mongoose"
+import mongoose, { Document, Schema, Types } from "mongoose"
 
 interface IUser extends Document{
+    _id: Types.ObjectId;
     email: string,
+    username: string,
     password: string, 
     information: string, // Bio
     registerationdate: string, // date when user regeisters
@@ -10,6 +12,7 @@ interface IUser extends Document{
 
 let userSchema: Schema = new Schema({
     email: { type: String, required: true },
+    username: {type: String, required: true},
     password: { type: String, required: true },
     information:{type: String, required: true},
     registerationdate:{type: String, required: true},

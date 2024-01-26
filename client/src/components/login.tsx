@@ -10,38 +10,43 @@ const loginform = () => {
             message?: string 
             token?: string
         }
+        console.log(email, password)
+        console.log(email|| password === "")
+        if(email =="" &&password == "" ){
+            alert("you have to fill every field");
+        }else {
         
-        try {
-            const response = await fetch("http://localhost:3000/login", {
-              method: 'POST',
-              headers: {
-                'Content-Type': 'application/json',
-              },
-              body: JSON.stringify({ email, password}),
-            });
-            if(response.status==403){ // incorrect credentials: password | email
-                const missing: JSON = await response.json()
-                console.log(missing)    
-                
-            }
-            if (response.ok) {
-                console.log('Login successful!');
-                        
-            }
-            if(response.status == 200){ // succesfull logging ing to user
-                const data: Data = await response.json()
-                console.log(data);
-                if(data.token){
-                    window.localStorage.setItem("auth_token",data.token) // store token to localstorage of the browser
+            try {
+                const response = await fetch("http://localhost:3000/login", {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ email, password}),
+                });
+                if(response.status==403){ // incorrect credentials: password | email
+                    const missing: JSON = await response.json()
+                    console.log(missing)    
+                    
                 }
-                window.location.replace("/");// redirect to mainpage
-            }
+                if (response.ok) {
+                    console.log('Login successful!');
+                            
+                }
+                if(response.status == 200){ // succesfull logging ing to user
+                    const data: Data = await response.json()
+                    console.log(data);
+                    if(data.token){
+                        window.localStorage.setItem("auth_token",data.token) // store token to localstorage of the browser
+                    }
+                    window.location.replace("/");// redirect to mainpage
+                }
 
-            
-          } catch (error) {
-            console.error('Error during login:', error);
-          }
-      
+                
+            } catch (error) {
+                console.error('Error during login:', error);
+            }
+      }
     }
     
 

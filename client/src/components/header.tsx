@@ -10,11 +10,17 @@ export default function ButtonAppBar() { // MaterialUI appbar to use as header o
     // const {t, i18n} = useTranslation();
     // const changeLanguage = (language) => {
     //     i18n.changeLanguage(language)
-    // } 
+    // }
+    const appBarStyle = {
+      backgroundColor: 'green', // Set the background color to green
+      
+    }; 
+    const token: string | null = window.localStorage.getItem("auth_token");
+
   return (
     <React.Suspense fallback="loading">
         <Box sx={{ flexGrow: 1 }}>
-        <AppBar position="static">
+        <AppBar position="static" style={appBarStyle}>
             <Toolbar>
             {/* <IconButton
                 size="large"
@@ -26,12 +32,12 @@ export default function ButtonAppBar() { // MaterialUI appbar to use as header o
             {/* </IconButton> */}
             <Button color="inherit" component={RouterLink} to="/"> Home</Button>
             <Button color="inherit" component={RouterLink} to="/about">About</Button> 
-            <Button color="inherit" component={RouterLink} to="/login">Login</Button>
-            <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
+            {token==null && (<Button color="inherit" component={RouterLink} to="/login">Login</Button>)}
+            <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>Finder
             </Typography>
             
                 
-            
+            {token &&token.length!=0 && (<Button color='inherit' id='logout' onClick={()=>{window.localStorage.removeItem("auth_token")}}>Log Out</Button>)}
             <Button color="inherit" id="fi" >FI</Button>
             <Button color="inherit" id="en" >EN</Button>
             </Toolbar>
