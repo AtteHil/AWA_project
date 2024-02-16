@@ -28,8 +28,9 @@ interface Profile {
   id: string,
   username: string,
   password: string,
-
+  bio: string,
 }
+
 
 app.listen(port, () => {
   console.log(`App listening at http://localhost:${port}`)
@@ -87,7 +88,7 @@ app.post("/login",async (req: Request, res: Response) =>{ // login function to c
           id: existingUser._id,
           email: existingUser.email
         }
-        const token: string = jwt.sign(jwtPayload, process.env.SECRET as string); // make token for user to store in client side browser
+        const token: string = jwt.sign(jwtPayload, process.env.SECRET as string, {expiresIn: '30m'}); // make token for user to store in client side browser
         return res.status(200).send({ success: true, token })  // send token and success message to client side
       } else{
         return res.status(403).send({message: "Incorrect password"});
@@ -103,18 +104,25 @@ app.post("/login",async (req: Request, res: Response) =>{ // login function to c
 
 
 
-app.post("/ownProfile",validate,async (req: Request, res: Response) =>{ // checks that user is logged in
-  // console.log(req.user);
-  res.send({message:"jes"})
+app.get("/Profile",validate,async (req: Request, res: Response) =>{ // checks that user is logged in
+  if(req.user){
+    const user: Profile= req.user as Profile
+    return(res.status(200).send({user}))
+  }
+  else{
+    return(res.status(401).send("UnAuhtorized"))
+  }
+  
+  
 })
 
 
 
 app.post("/fetchUsers", validate, async (req: Request, res: Response) =>{ // function to fetch users from database to to user to swipe
-  const user: any = req.user
+  const user: Profile = req.user as Profile
   if(req.user){
     // const loggedInUserId: string = (req.user as {_id: string})._id; 
-    const loggedUser: any  = await User.findById(user._id)
+    const loggedUser: any  = await User.findById(user.id)
   try {
     const otherUsers: IUser[] = await User
       .find({ 
@@ -152,7 +160,9 @@ app.post("/updateLiked",validate, async (req:Request, res:Response)=> {
         if(likedUser.liked.includes(user._id)){
           const match = new Match({
             userOne: user._id,
-            userTwo: likedID
+            userNameOne: user.username,
+            userTwo: likedID,
+            userNameTwo: likedUser.username
           }).save()
           return res.status(200).send({message: "Match"})
         }
@@ -179,14 +189,13 @@ app.post("/ChatLogs",validate, async (req:Request, res: Response) => { // get's 
     console.log("Backarille tuli viesti")
     const user: Profile = req.user as Profile
     const userID: string = user.id;
-    console.log(userID);
+    // console.log(userID);
     const chatLogs = await Match.find({
       $or: [
         { userOne: userID },
         { userTwo: userID }
       ]
     })
-    
     return res.send({chatLogs, userID})
   }
   
@@ -206,7 +215,7 @@ app.post("/message",validate, async (req:Request, res: Response) => { // pushes 
       { $push: { chatLog: {userId: userID,message: message, date: date} } },
       { new: true }
       )
-      console.log(chatLogs)
+      // console.log(chatLogs)
       return res.json({ chatLogs });
     }  
     catch(error) {
@@ -214,4 +223,32 @@ app.post("/message",validate, async (req:Request, res: Response) => { // pushes 
     }
 
   }
+})
+
+app.post("/updateUser",validate, async (req:Request, res: Response) => { 
+  const {email,username, password, information, newPassword}: {email: String, username: string, password: string, information: String, newPassword: string | null}=req.body
+  if(req.user){
+    const user: Profile= req.user as Profile
+    let newHash: string|undefined
+    if(bcrypt.compareSync(password, user.password)){
+      const salt: string = bcrypt.genSaltSync(10) // use bcrypt to create salt and hash the password 
+      if(newPassword!=null){
+        newHash= bcrypt.hashSync(newPassword, salt);
+      }
+      const updateFields: any = { email, username, information };
+      if (newHash) {
+        updateFields.password = newHash;
+      }
+      
+      const updatedUser = await User.findByIdAndUpdate(user.id,
+        updateFields,
+          { new: true }
+      );
+      res.status(200).json(updatedUser);
+  }else{res.status(401).send("Wrong password")}}
+  else{
+    res.status(401).send("UnAuhtorized")
+  }
+
+  
 })

@@ -76,7 +76,7 @@ app.post("/login", async (req, res) => {
                     id: existingUser._id,
                     email: existingUser.email
                 };
-                const token = jsonwebtoken_1.default.sign(jwtPayload, process.env.SECRET); // make token for user to store in client side browser
+                const token = jsonwebtoken_1.default.sign(jwtPayload, process.env.SECRET, { expiresIn: '30m' }); // make token for user to store in client side browser
                 return res.status(200).send({ success: true, token }); // send token and success message to client side
             }
             else {
@@ -89,15 +89,20 @@ app.post("/login", async (req, res) => {
         return res.status(500).send({ error });
     }
 });
-app.post("/ownProfile", validator_1.default, async (req, res) => {
-    // console.log(req.user);
-    res.send({ message: "jes" });
+app.get("/Profile", validator_1.default, async (req, res) => {
+    if (req.user) {
+        const user = req.user;
+        return (res.status(200).send({ user }));
+    }
+    else {
+        return (res.status(401).send("UnAuhtorized"));
+    }
 });
 app.post("/fetchUsers", validator_1.default, async (req, res) => {
     const user = req.user;
     if (req.user) {
         // const loggedInUserId: string = (req.user as {_id: string})._id; 
-        const loggedUser = await Users_1.User.findById(user._id);
+        const loggedUser = await Users_1.User.findById(user.id);
         try {
             const otherUsers = await Users_1.User
                 .find({
@@ -126,7 +131,9 @@ app.post("/updateLiked", validator_1.default, async (req, res) => {
                 if (likedUser.liked.includes(user._id)) {
                     const match = new Matches_1.Match({
                         userOne: user._id,
-                        userTwo: likedID
+                        userNameOne: user.username,
+                        userTwo: likedID,
+                        userNameTwo: likedUser.username
                     }).save();
                     return res.status(200).send({ message: "Match" });
                 }
@@ -151,7 +158,7 @@ app.post("/ChatLogs", validator_1.default, async (req, res) => {
         console.log("Backarille tuli viesti");
         const user = req.user;
         const userID = user.id;
-        console.log(userID);
+        // console.log(userID);
         const chatLogs = await Matches_1.Match.find({
             $or: [
                 { userOne: userID },
@@ -169,11 +176,36 @@ app.post("/message", validator_1.default, async (req, res) => {
         const userID = user.id;
         try {
             const chatLogs = await Matches_1.Match.findByIdAndUpdate(chatID, { $push: { chatLog: { userId: userID, message: message, date: date } } }, { new: true });
-            console.log(chatLogs);
+            // console.log(chatLogs)
             return res.json({ chatLogs });
         }
         catch (error) {
             console.log(error);
         }
+    }
+});
+app.post("/updateUser", validator_1.default, async (req, res) => {
+    const { email, username, password, information, newPassword } = req.body;
+    if (req.user) {
+        const user = req.user;
+        let newHash;
+        if (bcrypt_1.default.compareSync(password, user.password)) {
+            const salt = bcrypt_1.default.genSaltSync(10); // use bcrypt to create salt and hash the password 
+            if (newPassword != null) {
+                newHash = bcrypt_1.default.hashSync(newPassword, salt);
+            }
+            const updateFields = { email, username, information };
+            if (newHash) {
+                updateFields.password = newHash;
+            }
+            const updatedUser = await Users_1.User.findByIdAndUpdate(user.id, updateFields, { new: true });
+            res.status(200).json(updatedUser);
+        }
+        else {
+            res.status(401).send("Wrong password");
+        }
+    }
+    else {
+        res.status(401).send("UnAuhtorized");
     }
 });

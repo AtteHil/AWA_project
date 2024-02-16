@@ -32,7 +32,9 @@ const messageSchema = new mongoose_1.Schema({
 });
 let MatchesSchema = new mongoose_1.Schema({
     userOne: { type: String },
+    userNameOne: { type: String },
     userTwo: { type: String },
+    userNameTwo: { type: String },
     chatLog: [messageSchema]
 });
 const Match = mongoose_1.default.model('Match', MatchesSchema);

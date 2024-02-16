@@ -29,6 +29,7 @@ const registerform = () => {
       
             if (response.ok) {
               console.log('Registration successful!');
+              window.location.replace("/login")
               
             } else { //registeration unsuccesfull more detailed answer later
               console.error('Registration failed');
