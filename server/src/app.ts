@@ -6,8 +6,9 @@ import { User, IUser } from "./models/Users"
 import { Match, IMatches } from './models/Matches'
 import bcrypt from 'bcrypt'
 import validate from "./middleware/validator"
-import dotenv from "dotenv";
-
+import dotenv from "dotenv"
+import { validateEmail, validatePassword } from './validators/CredentialsValidator'
+import { Result, ValidationError, validationResult } from 'express-validator'
 
 dotenv.config();
 const app: Express= express()
@@ -46,8 +47,15 @@ app.post("/isLogged", async(req:Request, res: Response)=> {
 
   }
 })
-app.post("/register",async (req: Request, res: Response) =>{ // function to register new user and add them to mongoDB
-    const {email,username, password, information, registerationdate}: {email: String, username: string, password: string, information: String, registerationdate: string}=req.body
+app.post("/register", validateEmail, validatePassword,async (req: Request, res: Response) =>{ // function to register new user and add them to mongoDB
+  const errors: Result<ValidationError> = validationResult(req)
+    console.log(req.body)
+
+    if (!errors.isEmpty()) {
+      console.log("meni tähän");
+        return res.status(400).json({ errors: errors.array() })
+    }  
+  const {email,username, password, information, registerationdate}: {email: String, username: string, password: string, information: String, registerationdate: string}=req.body
     // console.log(" from registeration body ",req.body)
     try{
       const existingEmail: IUser | null = await User.findOne({ email: req.body.email })

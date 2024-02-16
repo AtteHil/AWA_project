@@ -158,7 +158,7 @@ const loadChats = ()=> {
     }
     return(
         chatLogs && chatLogs.length!=0 ? (
-        <div>
+        <div className="ChatDiv">
             <Button onClick={lastChat}>Previous Chat</Button>
             <Button onClick={nextChat}>Next Chat</Button>
             <Button onClick={getChatLogs}> Refresh</Button>

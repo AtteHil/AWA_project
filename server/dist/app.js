@@ -12,6 +12,8 @@ const Matches_1 = require("./models/Matches");
 const bcrypt_1 = __importDefault(require("bcrypt"));
 const validator_1 = __importDefault(require("./middleware/validator"));
 const dotenv_1 = __importDefault(require("dotenv"));
+const CredentialsValidator_1 = require("./validators/CredentialsValidator");
+const express_validator_1 = require("express-validator");
 dotenv_1.default.config();
 const app = (0, express_1.default)();
 const port = 3000;
@@ -36,7 +38,13 @@ app.post("/isLogged", async (req, res) => {
     if (token) {
     }
 });
-app.post("/register", async (req, res) => {
+app.post("/register", CredentialsValidator_1.validateEmail, CredentialsValidator_1.validatePassword, async (req, res) => {
+    const errors = (0, express_validator_1.validationResult)(req);
+    console.log(req.body);
+    if (!errors.isEmpty()) {
+        console.log("meni tähän");
+        return res.status(400).json({ errors: errors.array() });
+    }
     const { email, username, password, information, registerationdate } = req.body;
     // console.log(" from registeration body ",req.body)
     try {
