@@ -1,0 +1,42 @@
+.editDiv {
+    justify-content: center;
+    margin: auto;
+    max-width: 30%;
+
+    border: 3px solid green;
+    border-radius: 5px;
+    padding: 20px;
+    margin-top: 3rem;
+    background-color: rgb(2, 116, 31);
+}
+
+.editDiv>input {
+    max-width: 250px;
+    width: 100%;
+    display: flex;
+}
+
+#information {
+    width: 100%;
+    max-width: 250px;
+
+    padding: 10px;
+    box-sizing: border-box;
+
+}
+
+#newPassword {
+    width: 100%;
+    max-width: 250px;
+    box-sizing: border-box;
+}
+
+textarea {
+    resize: none;
+}
+
+@media screen and (max-width: 768px) {
+    .editDiv {
+        max-width: 80%;
+    }
+}

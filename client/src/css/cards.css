@@ -1,20 +1,22 @@
-.cardAndButtons{
+.cardAndButtons {
     justify-content: center;
-    margin:auto;
+    margin: auto;
     max-width: 30%;
-    
+
     border: 3px solid green;
     border-radius: 5px;
     padding: 20px;
     margin-top: 3rem;
     background-color: rgb(2, 116, 31);
-    
+
 }
-.ButtonsDiv{
+
+.ButtonsDiv {
     justify-content: space-between;
     display: flex;
 }
-.TinderCard{
+
+.TinderCard {
     background-color: #242424;
     border: 2px solid green;
     padding: 3rem;
@@ -22,17 +24,30 @@
     border-radius: 5px;
 }
 
-.Buttons{
-    
-    
+.Buttons {
+
+
     justify-content: center;
     margin: auto;
     color: green;
     align-items: center;
     padding: 10px 20px;
-    
+
 }
-.Text{
+
+#infoText {
+    justify-content: center;
+    margin: auto;
+    max-width: 30%;
+
+    border: 3px solid green;
+    border-radius: 5px;
+    padding: 20px;
+    margin-top: 3rem;
+    background-color: rgb(2, 116, 31);
+}
+
+.Text {
     font-weight: bold;
     font-size: large;
     color: rgb(3, 177, 3);
@@ -41,9 +56,10 @@
     align-items: center;
     text-align: center;
     margin-top: 3rem;
-    
-    
+
+
 }
+
 @media screen and (max-width: 768px) {
     .cardAndButtons {
         max-width: 80%;

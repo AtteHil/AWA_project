@@ -1,15 +1,121 @@
-.rce-container-mbox{ /* Chat message text color*/
+.rce-container-mbox {
+    /* Chat message text color*/
     color: black;
-    
-    
+
+
 }
-.message-list { /* Chat box element */
-    max-width: 50%;
-    max-height: 50vh; 
+
+.message-list {
+    /* Chat box element */
+    display: flex;
+    max-width: 100%;
+    max-height: 40vh;
     overflow: auto;
     flex-direction: column-reverse;
-    
+
 }
-.Chat-Div{
-    
+
+.chats {
+    flex: 1;
+}
+
+.ChatDiv {
+    justify-content: center;
+    margin: auto;
+    max-width: 70%;
+    max-height: 60vh;
+    display: grid;
+
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+    border: 3px solid green;
+    border-radius: 5px;
+    padding: 20px;
+    margin-top: 3rem;
+    background-color: rgb(2, 116, 31);
+}
+
+.chats>button {
+    margin: 5px;
+}
+
+.buttons {
+    display: flex;
+    flex-direction: column;
+    overflow-y: auto;
+    max-height: 200px;
+    padding-right: 10px;
+    border: 3px solid #242424;
+    padding: 3px;
+    border-radius: 5px;
+}
+
+.buttons::-webkit-scrollbar {
+    /* scrollbar for chats if there is many of them*/
+    width: 8px;
+
+}
+
+.buttons::-webkit-scrollbar-thumb {
+    background-color: rgba(0, 0, 0, 0.2);
+
+    border-radius: 4px;
+
+}
+
+.buttons button {
+    margin-bottom: 8px;
+
+}
+
+@media screen and (max-width: 768px) {
+    .ChatDiv {
+        max-width: 100%;
+        display: grid;
+        grid-template-rows: auto;
+        grid-template-columns: 1fr;
+        height: 90%;
+        max-height: 90vh;
+    }
+
+    .buttons {
+        padding-right: 0;
+        max-height: unset;
+        overflow-y: auto;
+        flex-direction: row;
+        font-size: small;
+    }
+
+    .chats {
+        margin-top: 20px;
+
+    }
+
+    .chats {
+        margin-top: 20px;
+        /* Add margin between buttons and chat */
+        max-height: 60vh;
+        /* Limit max height for chat section */
+        width: 95%;
+        /* Enable overflow for chat section */
+    }
+
+    .rce-container-mlist message-list {
+        width: 30%;
+    }
+
+    #ChatTitle {
+        font-size: 1.5rem;
+    }
+
+    .chats>input {
+        max-width: 250px;
+        width: 60%;
+        display: flex;
+    }
+
+    .buttons button {
+        margin-right: 8px;
+        margin-bottom: 0;
+    }
 }
