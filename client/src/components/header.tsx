@@ -20,14 +20,14 @@ export default function ButtonAppBar() { // MaterialUI appbar to use as header o
     backgroundColor: 'green', // Set the background color to green
 
   };
-  React.useEffect(() => {
+  React.useEffect(() => { // setting background image to all pages
     document.documentElement.style.height = '100vh';
     document.body.style.height = '100vh';
     document.body.style.background = `url(${background_image}) no-repeat center center fixed`
     document.body.style.backgroundSize = '100% 100%'
   }, [])
   const token: string | null = window.localStorage.getItem("auth_token");
-  const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
+  const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null); // material ui appbar settings https://mui.com/material-ui/react-app-bar/
   const open = Boolean(anchorEl);
   const handleClick = (event: React.MouseEvent<HTMLElement>) => {
 
@@ -46,14 +46,8 @@ export default function ButtonAppBar() { // MaterialUI appbar to use as header o
             justifyContent: { xs: 'center', sm: 'space-between' },
             minHeight: { xs: 'auto', sm: '64px' }
           }}>
-            {/* <IconButton
-                size="large"
-                edge="start"
-                color="inherit"
-                aria-label="menu"
-                sx={{ mr: 2 }}
-            > */}
-            {/* </IconButton> */}
+
+
             <Button color="inherit" component={RouterLink} to="/"> {t('Home')}</Button>
             <Button color="inherit" component={RouterLink} to="/Swipe">{t('Start Swiping')}</Button>
             {token == null && (<Button color="inherit" component={RouterLink} to="/login">{t('Login')}</Button>)}
@@ -61,7 +55,7 @@ export default function ButtonAppBar() { // MaterialUI appbar to use as header o
             </Typography>
 
 
-            {/* {token &&token.length!=0 && (<Button color='inherit' id='logout' onClick={()=>{window.localStorage.removeItem("auth_token"); window.location.replace("/login")}}>Log Out</Button>)} */}
+
             {token && token.length != 0 && (<div>
               <Button
                 id="demo-positioned-button"

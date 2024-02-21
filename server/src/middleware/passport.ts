@@ -1,15 +1,15 @@
 import jwt from "jsonwebtoken";
 import passport from "passport";
 import { Strategy, ExtractJwt, StrategyOptions } from "passport-jwt";
-import {User, IUser} from "../models/Users";
+import { User, IUser } from "../models/Users";
 import dotenv from "dotenv";
 
 dotenv.config();
-passport.initialize();
+passport.initialize(); // got help to turn weekly task passport to TypeScript from Aleksi Haapalainen
 
 const jwtOptions: StrategyOptions = { //token options set
     jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
-    secretOrKey: process.env.SECRET as string,
+    secretOrKey: process.env.SECRET as string, // use secret from .env file (User has to set this .env file with SECRET=*Your own secret string*)
 };
 
 

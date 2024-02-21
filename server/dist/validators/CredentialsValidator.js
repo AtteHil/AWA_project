@@ -2,7 +2,7 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.validatePassword = exports.validateEmail = void 0;
 const express_validator_1 = require("express-validator");
-const validateEmail = (0, express_validator_1.body)('email').isEmail().trim().escape();
+const validateEmail = (0, express_validator_1.body)('email').isEmail().trim().escape(); // validator to check email
 exports.validateEmail = validateEmail;
 const validatePassword = (0, express_validator_1.body)('password').isStrongPassword({
     minLength: 8,

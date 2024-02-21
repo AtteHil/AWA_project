@@ -93,11 +93,9 @@
 
     .chats {
         margin-top: 20px;
-        /* Add margin between buttons and chat */
         max-height: 60vh;
-        /* Limit max height for chat section */
         width: 95%;
-        /* Enable overflow for chat section */
+
     }
 
     .rce-container-mlist message-list {

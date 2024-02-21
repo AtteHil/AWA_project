@@ -12,7 +12,7 @@ import Chats from "./components/chat"
 import Profile from "./components/profile"
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 
-function App() { // basic app desing and routes route different connections to pages wiuth right components
+function App() { // basic app desing and routes route different connections to pages with right components
 
 
   return (

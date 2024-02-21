@@ -31,14 +31,14 @@ const loadfrontPage = () => { //function to load cards of the users to like or d
             if (response.status == 200) {
                 const data: UserData[] = await response.json();
                 setResult(data);
-                console.log(data)
+
             }
 
         } catch (error) {
             console.error('Error fetching own profile:', error);
         }
     };
-    useEffect(() => {
+    useEffect(() => { // on page load get token and fetch data if there is no token => user is not logged in and redirect to login page
         const token: String | null = localStorage.getItem("auth_token");
         if (token) {
 
@@ -48,10 +48,10 @@ const loadfrontPage = () => { //function to load cards of the users to like or d
             window.location.replace("/login")
         }
     }, []);
-    const Like = async () => {
+    const Like = async () => { // like function called by button or swipe to right
         if (result) {
             try {
-                const response: Response = await fetch("http://localhost:3000/updateLiked", {
+                const response: Response = await fetch("http://localhost:3000/updateLiked", { // send liked user to backend to be added on the liked 
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
@@ -66,7 +66,7 @@ const loadfrontPage = () => { //function to load cards of the users to like or d
                 if (response.status == 200) {
                     const result = await response.json()
                     console.log("user added to liked")
-                    if (result.message == "Match") {
+                    if (result.message == "Match") { // if backend returns Match we got match and both users have liked each other
                         alert("YOU GOT MATCH!");
                     }
                 }
@@ -102,7 +102,7 @@ const loadfrontPage = () => { //function to load cards of the users to like or d
             {result && result.length > 0 && currentShown < result.length && ( // if there is users to match with we return the page to dislike and like
                 <div className='cardAndButtons'>
                     <div className='swipableCard'>
-                        <TinderCard key={currentShown} onSwipe={(direction) => { swiped(direction, result[currentShown]) }} preventSwipe={['up', 'down']}><div className='TinderCard'><h3 >{result[currentShown].username}</h3><br /><p> Bio: {result[currentShown].information}</p><br /><p> {t('Member since')}: {result[currentShown].registerationdate}</p></div></TinderCard>
+                        <TinderCard key={currentShown} onSwipe={(direction) => { swiped(direction, result[currentShown]) }} preventSwipe={['up', 'down']}><div className='TinderCard'><h3 >{result[currentShown].username}</h3><br /><p id='bio'> Bio: {result[currentShown].information}</p><br /><p> {t('Member since')}: {result[currentShown].registerationdate}</p></div></TinderCard>
 
                     </div>
                     <div className='ButtonsDiv'>

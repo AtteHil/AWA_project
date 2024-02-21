@@ -37,7 +37,7 @@ const registerform = () => {
             setUsername(data.user.username);
 
 
-          } else { //registeration unsuccesfull more detailed answer later
+          } else { //update unsuccesfull more detailed answer later
             console.error('Registration failed');
 
           }
@@ -51,7 +51,7 @@ const registerform = () => {
     }
   }, [])
 
-  const UpdateUser = async () => { // function to register new user
+  const UpdateUser = async () => { // function to update new user
     if (email === "" || password === "" || information === "" || username === "") {
       alert("You have to fill every field");
     } else {
@@ -75,7 +75,7 @@ const registerform = () => {
 
 
 
-        } else { //registeration unsuccesfull more detailed answer later
+        } else { //update unsuccesfull more detailed answer later
           console.error('updating user failed');
 
         }

@@ -20,8 +20,6 @@ const port = 3000;
 const corsOptions = { origin: "http://localhost:5173", optionsSuccessStatus: 200 };
 app.use(express_1.default.json());
 app.use((0, cors_1.default)(corsOptions));
-// const server = http.createServer(app);
-// const io = new Server(server);
 mongoose_1.default.connect('mongodb://127.0.0.1:27017/project'); // adding mongoDB connection
 mongoose_1.default.Promise = Promise;
 const db = mongoose_1.default.connection;
@@ -30,23 +28,12 @@ db.on('connected', () => { console.log("Connected to DB"); });
 app.listen(port, () => {
     console.log(`App listening at http://localhost:${port}`);
 });
-app.get("/message", (req, res) => {
-    res.json({ message: "Working message from backend" });
-});
-app.post("/isLogged", async (req, res) => {
-    const token = req.body.token;
-    if (token) {
-    }
-});
 app.post("/register", CredentialsValidator_1.validateEmail, CredentialsValidator_1.validatePassword, async (req, res) => {
     const errors = (0, express_validator_1.validationResult)(req);
-    console.log(req.body);
     if (!errors.isEmpty()) {
-        console.log("meni tähän");
         return res.status(400).json({ errors: errors.array() });
     }
-    const { email, username, password, information, registerationdate } = req.body;
-    // console.log(" from registeration body ",req.body)
+    const { email, username, password, information, registrationdate } = req.body;
     try {
         const existingEmail = await Users_1.User.findOne({ email: req.body.email });
         if (existingEmail) {
@@ -60,7 +47,7 @@ app.post("/register", CredentialsValidator_1.validateEmail, CredentialsValidator
                 username: username,
                 password: hashedpassword,
                 information: information,
-                registerationdate: registerationdate
+                registerationdate: registrationdate
             });
             await newUser.save();
             return res.status(200).json({ message: 'User registered successfully.' });
@@ -114,8 +101,10 @@ app.post("/fetchUsers", validator_1.default, async (req, res) => {
         try {
             const otherUsers = await Users_1.User
                 .find({
-                _id: { $ne: loggedUser._id, // used for information https://www.mongodb.com/docs/manual/reference/method/db.collection.find/
-                    $nin: loggedUser.liked } // Exclude users whose IDs are in the liked array
+                _id: {
+                    $ne: loggedUser.id, // used for information https://www.mongodb.com/docs/manual/reference/method/db.collection.find/
+                    $nin: loggedUser.liked
+                } // Exclude users whose IDs are in the liked array
             })
                 .select('username information registerationdate _id')
                 .limit(50)
@@ -134,18 +123,19 @@ app.post("/updateLiked", validator_1.default, async (req, res) => {
         const user = req.user;
         if (!user.liked.includes(likedID)) {
             try {
-                const updatedUser = await Users_1.User.findByIdAndUpdate(user._id, { $push: { liked: likedID } }, { new: true });
-                const likedUser = await Users_1.User.findById(likedID);
-                if (likedUser.liked.includes(user._id)) {
+                const updatedUser = await Users_1.User.findByIdAndUpdate(user.id, //if user is not already in liked push it to the liked array
+                { $push: { liked: likedID } }, { new: true });
+                const likedUser = await Users_1.User.findById(likedID); // find the profile which was just liked ///// Possible fault when changing to Profile
+                if (likedUser.liked.includes(user.id)) { // check if the current user is in liked
                     const match = new Matches_1.Match({
-                        userOne: user._id,
+                        userOne: user.id,
                         userNameOne: user.username,
                         userTwo: likedID,
                         userNameTwo: likedUser.username
                     }).save();
-                    return res.status(200).send({ message: "Match" });
+                    return res.status(200).send({ message: "Match" }); // send match back
                 }
-                if (updatedUser) {
+                if (updatedUser) { // else send Liked back
                     return res.status(200).send({ message: "Liked" });
                 }
                 else {
@@ -163,17 +153,15 @@ app.post("/updateLiked", validator_1.default, async (req, res) => {
 });
 app.post("/ChatLogs", validator_1.default, async (req, res) => {
     if (req.user) {
-        console.log("Backarille tuli viesti");
         const user = req.user;
         const userID = user.id;
-        // console.log(userID);
         const chatLogs = await Matches_1.Match.find({
             $or: [
                 { userOne: userID },
                 { userTwo: userID }
             ]
         });
-        return res.send({ chatLogs, userID });
+        return res.send({ chatLogs, userID }); // send chatlogs and user id for checking message sender in front
     }
 });
 app.post("/message", validator_1.default, async (req, res) => {
@@ -188,7 +176,6 @@ app.post("/message", validator_1.default, async (req, res) => {
             return res.json({ chatLogs });
         }
         catch (error) {
-            console.log(error);
         }
     }
 });

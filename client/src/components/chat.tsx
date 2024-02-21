@@ -19,11 +19,11 @@ const loadChats = () => {
     const [user, setUser] = useState<string>('');
     const [own, setOwn] = useState<string>('');
     const messageRef = useRef<null | HTMLDivElement>(null);
-    useEffect(() => {
-        fetchData();
+    useEffect(() => { // fetch chats on the page load
+        fetchChat();
     }, []);
     const { t, i18n } = useTranslation();
-    useEffect(() => { scrollToBottom }, [messages])
+    useEffect(() => { scrollToBottom }, [messages]) // useeffect calls chat scroll function if new message is sent
     useEffect(() => {
 
         if (chatLogs.length != 0) {
@@ -52,23 +52,8 @@ const loadChats = () => {
         }
     };
 
-    // const nextChat = () => {
 
-    //     if (currentIndex < chatLogs.chatLogs.length - 1) {
-    //         setIndex(prevIndex => prevIndex + 1);
-    //     }
-
-
-    // }
-    // const lastChat = () => {
-
-    //     if (currentIndex > 0) {
-    //         setIndex(prevIndex => prevIndex - 1);
-    //     }
-
-
-    // }
-    const fetchData = async () => { // fetches chatLogs of logged in user
+    const fetchChat = async () => { // fetches chatLogs of logged in user
         const token = localStorage.getItem("auth_token");
         if (token) {
             try {
@@ -119,8 +104,8 @@ const loadChats = () => {
             }
         }
     };
-    const getChatLogs = async () => {
-        fetchData();
+    const getChatLogs = async () => { // simple function to fetch chatLogs
+        fetchChat();
     };
     const makeChatButtons = (chatLogs: any) => { //make buttons for each chat to open the selected chat
 
@@ -148,7 +133,7 @@ const loadChats = () => {
                     'Content-Type': 'application/json',
                     'Authorization': `Bearer ${token}`
                 },
-                body: JSON.stringify({ chatID, message }),
+                body: JSON.stringify({ chatID, message }), //as body send which chat are we trying to send the message to and then message itself
             });
 
             if (!response.ok) {
@@ -167,8 +152,8 @@ const loadChats = () => {
                     text: message,
                     date: new Date(),
                 };
-                setMessages(prevMessages => [...prevMessages, newMessage]);
-                setMessage('');
+                setMessages(prevMessages => [...prevMessages, newMessage]); // update messages to include new send message
+                setMessage(''); // set messagebox where user writes to empty
 
 
             }

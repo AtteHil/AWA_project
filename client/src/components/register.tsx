@@ -7,15 +7,15 @@ const registerform = () => {
   const [email, setEmail] = useState<String>('');// usestates to save credentials and information
   const [password, setPassword] = useState<String>('');
   const [information, setInformation] = useState<String>('');
-  const [registerationdate, setRegisterationdate] = useState<string>('');
+  const [registrationdate, setRegistrationdate] = useState<string>('');
   const [username, setUsername] = useState<string>('');
   const { t, i18n } = useTranslation();
-  useEffect(() => { // function to get the day user is on the site
+  useEffect(() => { // function to get the day user is on the site to use as registration date
     const current: string = format(new Date(), "yyyy-MM-dd");
-    setRegisterationdate(current);
+    setRegistrationdate(current);
   }, []);
   const registerFunction = async () => { // function to register new user
-    if (email == "" && password == "" && information == "" && registerationdate == "" && username == "") {
+    if (email == "" && password == "" && information == "" && registrationdate == "" && username == "") {
       alert("you have to fill every field");
     } else {
 
@@ -26,14 +26,14 @@ const registerform = () => {
           headers: {
             'Content-Type': 'application/json',
           },
-          body: JSON.stringify({ email, username, password, information, registerationdate }),
+          body: JSON.stringify({ email, username, password, information, registrationdate }),
         });
 
         if (response.ok) {
           console.log('Registration successful!');
           window.location.replace("/login")
 
-        } else { //registeration unsuccesfull more detailed answer later
+        } else { //registration unsuccesfull more detailed answer later
           console.error('Registration failed');
 
         }

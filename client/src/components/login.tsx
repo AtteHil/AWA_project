@@ -29,7 +29,6 @@ const loginform = () => {
                 });
                 if (response.status == 403) { // incorrect credentials: password | email
                     const missing: Data = await response.json()
-                    console.log(missing)
                     alert(missing.message);
 
                 }
@@ -37,9 +36,9 @@ const loginform = () => {
                     console.log('Login successful!');
 
                 }
-                if (response.status == 200) { // succesfull logging ing to user
+                if (response.status == 200) { // succesfull logging in to user
                     const data: Data = await response.json()
-                    // console.log(data);
+
                     if (data.token) {
                         window.localStorage.setItem("auth_token", data.token) // store token to localstorage of the browser
                     }
