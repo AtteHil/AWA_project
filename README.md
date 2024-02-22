@@ -1,7 +1,7 @@
 # AWA Project
 
 This repository contains the code for the AWA Project. (Advanced web application course)
-Site is dating app where users can regiter and then log in to start swiping other users
+Site is dating app where users can register and then log in to start swiping other users. 
 
 ## Installation
 
