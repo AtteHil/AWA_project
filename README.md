@@ -1,6 +1,7 @@
 # AWA Project
 
-This repository contains the code for the AWA Project.
+This repository contains the code for the AWA Project. (Advanced web application course)
+Site is dating app where users can regiter and then log in to start swiping other users
 
 ## Installation
 
@@ -29,6 +30,11 @@ npm run start-dev
 ```
 10. The server should now be up and running at [http://localhost:5173/](http://localhost:5173/).
 
+(11. If you want to run tests and populate database with 10 sample users (amount of sample users can be changed in test.js file))
+in `/test` folder run npm install and then 
+```bash
+node test.js
+```
 ## License
 
 This project is licensed under the MIT License 
