@@ -41,7 +41,7 @@ app.post("/register", validateEmail, validatePassword, async (req: Request, res:
   const errors: Result<ValidationError> = validationResult(req)
 
   if (!errors.isEmpty()) {
-    return res.status(400).json({ errors: errors.array() })
+    return res.status(401).json({ errors: errors.array() })
   }
 
   const { email, username, password, information, registrationdate }: { email: String, username: string, password: string, information: String, registrationdate: string } = req.body

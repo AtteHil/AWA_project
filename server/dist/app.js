@@ -31,7 +31,7 @@ app.listen(port, () => {
 app.post("/register", CredentialsValidator_1.validateEmail, CredentialsValidator_1.validatePassword, async (req, res) => {
     const errors = (0, express_validator_1.validationResult)(req);
     if (!errors.isEmpty()) {
-        return res.status(400).json({ errors: errors.array() });
+        return res.status(401).json({ errors: errors.array() });
     }
     const { email, username, password, information, registrationdate } = req.body;
     try {

@@ -38,11 +38,11 @@ const registerform = () => {
 
 
           } else { //update unsuccesfull more detailed answer later
-            console.error('Registration failed');
+            console.error('profile fetch failed');
 
           }
         } catch (error) {
-          console.error('Error during registration:', error);
+          console.error('Error during getting profile:', error);
         }
       }
       fetchUser();
