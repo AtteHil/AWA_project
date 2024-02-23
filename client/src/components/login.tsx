@@ -2,21 +2,15 @@ import React, { useState, useEffect } from 'react';
 import { BrowserRouter as Router, Routes, Route, Link as RouterLink, Link } from 'react-router-dom';
 import "../css/Login.css"
 import { useTranslation } from 'react-i18next';
+import { loginEmailErrorMessages, loginPasswordErrorMessages } from './Messages';
+
 const loginform = () => {
     const [email, setEmail] = useState<String>('');
     const [password, setPassword] = useState<String>('');
     const { t, i18n } = useTranslation();
 
 
-    const emailErrorMessages: { [key: string]: string } = {
-        en: "No user with this email",
-        fi: "Tällä sähköpostilla ei ole käyttäjää."
-    }
 
-    const passwordErrorMessages: { [key: string]: string } = {
-        en: "Password doesn't match",
-        fi: "Salasana on väärä"
-    }
 
     const loginFunction = async () => {// logging in to existing user
         interface Data { // interface for the return data of the fetch
@@ -42,10 +36,10 @@ const loginform = () => {
                     const currentLanguage: string = i18n.language
 
                     if (missing.message == "password") {
-                        alert(passwordErrorMessages[currentLanguage]);
+                        alert(loginPasswordErrorMessages[currentLanguage]);
                     }
                     else if (missing.message == "email") {
-                        alert(emailErrorMessages[currentLanguage]);
+                        alert(loginEmailErrorMessages[currentLanguage]);
                     }
 
                 }

@@ -3,7 +3,7 @@ import { BrowserRouter as Router, Routes, Route, Link as RouterLink, Link } from
 import { format } from 'date-fns';
 import "../css/Register.css"
 import { useTranslation } from 'react-i18next';
-
+import { registrationErrorMessages, registrationSuccessMessages } from './Messages';
 // password requirements show on hover help looked from this site:
 //https://plainenglish.io/blog/how-to-handle-mouse-hover-events-in-react
 
@@ -20,14 +20,7 @@ const registerform = () => {
     setShowRequirements(!showRequirements);
   };
   const { t, i18n } = useTranslation();
-  const successMessages: { [key: string]: string } = {
-    en: "Profile created. Log in to proceed",
-    fi: "Käyttäjä luotu. jatka kirjautumalla sisään."
-  }
-  const errorMessages: { [key: string]: string } = {
-    en: "Error while creating profile. Check your credentials",
-    fi: "Käyttäjän luonti ei onnistunut. Tarkista antamasi tiedot"
-  }
+
   useEffect(() => { // function to get the day user is on the site to use as registration date
     const current: string = format(new Date(), "yyyy-MM-dd");
     setRegistrationdate(current);
@@ -49,12 +42,12 @@ const registerform = () => {
 
         if (response.ok) {
           const currentLanguage = i18n.language
-          alert(successMessages[currentLanguage])
+          alert(registrationSuccessMessages[currentLanguage])
           window.location.replace("/login")
 
         } else { //registration unsuccesfull 
           const currentLanguage = i18n.language
-          alert(errorMessages[currentLanguage])
+          alert(registrationErrorMessages[currentLanguage])
           console.error('Registration failed');
 
         }

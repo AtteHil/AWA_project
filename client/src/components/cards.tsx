@@ -1,9 +1,9 @@
-
-import { Button, colors } from '@mui/material';
 import React, { useState, useEffect } from 'react';
 import TinderCard from 'react-tinder-card'
 import "../css/cards.css"
 import { useTranslation } from 'react-i18next';
+import { matchMessages } from './Messages';
+
 interface UserData {
     username: string;
     information: string;
@@ -15,10 +15,7 @@ const loadfrontPage = () => { //function to load cards of the users to like or d
     const [result, setResult] = useState<null | UserData[]>(null);
     const [currentShown, setCurrentShown] = useState<number>(0);
     const { t, i18n } = useTranslation();
-    const messages: { [key: string]: string } = {
-        en: "You got Match! Go to chat page to start chatting",
-        fi: "Sait Osuman! Siirry chatti sivulle niin voit aloittaa keskustelun"
-    }
+
     const fetchData = async (): Promise<void> => {
         try {
             const response: Response = await fetch("http://localhost:3000/fetchUsers", {
@@ -72,7 +69,7 @@ const loadfrontPage = () => { //function to load cards of the users to like or d
                     if (result.message == "Match") {
                         // if backend returns Match we got match and both users have liked each other
                         const currentLanguage: string = i18n.language // current language is got 
-                        alert(messages[currentLanguage]); // present correct language in the alert
+                        alert(matchMessages[currentLanguage]); // present correct language in the alert
                     }
                 }
 

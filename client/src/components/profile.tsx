@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
-import { BrowserRouter as Router, Routes, Route, Link as RouterLink, Link } from 'react-router-dom';
 import "../css/Profile.css"
+import { profileSuccessMessages, profileErrorMessages } from './Messages';
+
 
 const registerform = () => {
   const [isEditing, setisEditing] = useState<boolean>(false);
@@ -9,18 +10,10 @@ const registerform = () => {
   const [password, setPassword] = useState<string>('');
   const [newPassword, setNewPassword] = useState<string>('');
   const [information, setInformation] = useState<string>('');
-
   const [username, setUsername] = useState<string>('');
   const token: String | null = localStorage.getItem("auth_token");
   const { t, i18n } = useTranslation();
-  const ErrorMessages: { [key: string]: string } = {
-    en: "You must fill everything except new password",
-    fi: "Kaikki muut kentät ovat pakollisia, paitsi uusi salasana"
-  }
-  const successMessages: { [key: string]: string } = {
-    en: "User updated. Please login again",
-    fi: "Tiedot päivitetty. Ole hyvä ja kirjaudu uudestaan."
-  }
+
   useEffect(() => {
     if (token) {
       const fetchUser = async (): Promise<void> => {
@@ -63,7 +56,7 @@ const registerform = () => {
     if (email === "" || password === "" || information === "" || username === "") {
       const currentLanguage = i18n.language;
 
-      alert(ErrorMessages[currentLanguage]);
+      alert(profileErrorMessages[currentLanguage]);
     } else {
 
 
@@ -81,7 +74,7 @@ const registerform = () => {
         if (response.ok) {
           const currentLanguage = i18n.language;
 
-          alert(successMessages[currentLanguage]);
+          alert(profileSuccessMessages[currentLanguage]);
           window.localStorage.removeItem("auth_token");
           window.location.replace('/login');
 
