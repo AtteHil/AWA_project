@@ -15,6 +15,10 @@ const loadfrontPage = () => { //function to load cards of the users to like or d
     const [result, setResult] = useState<null | UserData[]>(null);
     const [currentShown, setCurrentShown] = useState<number>(0);
     const { t, i18n } = useTranslation();
+    const messages: { [key: string]: string } = {
+        en: "You got Match! Go to chat page to start chatting",
+        fi: "Sait Osuman! Siirry chatti sivulle niin voit aloittaa keskustelun"
+    }
     const fetchData = async (): Promise<void> => {
         try {
             const response: Response = await fetch("http://localhost:3000/fetchUsers", {
@@ -65,9 +69,10 @@ const loadfrontPage = () => { //function to load cards of the users to like or d
                 }
                 if (response.status == 200) {
                     const result = await response.json()
-                    console.log("user added to liked")
-                    if (result.message == "Match") { // if backend returns Match we got match and both users have liked each other
-                        alert("YOU GOT MATCH!");
+                    if (result.message == "Match") {
+                        // if backend returns Match we got match and both users have liked each other
+                        const currentLanguage: string = i18n.language // current language is got 
+                        alert(messages[currentLanguage]); // present correct language in the alert
                     }
                 }
 

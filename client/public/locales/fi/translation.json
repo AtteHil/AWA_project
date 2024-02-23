@@ -23,5 +23,13 @@
     "Save": "Tallenna",
     "Edit": "Muokkaa",
     "Send": "Lähetä",
-    "Refresh": "Päivitä"
+    "Refresh": "Päivitä",
+    "Welcome": "Tervetuloa!",
+    "Hello please log in or register to use the site": "Kirjautumalla sisään pääset käyttämään sivua",
+    "Start swiping in this page": "Pääset tykkäilemään käyttäjistä täällä",
+    "Password requirements:": "Salasanan vaatimukset",
+    "At least 8 characters": "Vähintään 8 merkkiä pitkä",
+    "At least one uppercase letter": "Vähintään yksi iso kirjain",
+    "At least one lowercase letter": "Vähintään yksi pieni kirjain",
+    "At least one number": "Vähintään yksi numero"
 }

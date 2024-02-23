@@ -63,7 +63,7 @@ app.post("/login", async (req, res) => {
     try {
         const existingUser = await Users_1.User.findOne({ email: email });
         if (!existingUser) {
-            return res.status(403).send({ message: "No user with this email" });
+            return res.status(403).send({ message: "email" });
         }
         else {
             if (bcrypt_1.default.compareSync(password, existingUser.password)) { //compareSync because want to use async found here https://stackoverflow.com/questions/69324159/bcrypt-compare-or-bcrypt-comparesync
@@ -75,7 +75,7 @@ app.post("/login", async (req, res) => {
                 return res.status(200).send({ success: true, token }); // send token and success message to client side
             }
             else {
-                return res.status(403).send({ message: "Incorrect password" });
+                return res.status(403).send({ message: "password" });
             }
         }
     }
@@ -87,7 +87,7 @@ app.post("/login", async (req, res) => {
 app.get("/Profile", validator_1.default, async (req, res) => {
     if (req.user) {
         const user = req.user;
-        return (res.status(200).send({ user }));
+        return (res.status(200).send(user));
     }
     else {
         return (res.status(401).send("UnAuhtorized"));
@@ -172,7 +172,6 @@ app.post("/message", validator_1.default, async (req, res) => {
         const userID = user.id;
         try {
             const chatLogs = await Matches_1.Match.findByIdAndUpdate(chatID, { $push: { chatLog: { userId: userID, message: message, date: date } } }, { new: true });
-            // console.log(chatLogs)
             return res.json({ chatLogs });
         }
         catch (error) {

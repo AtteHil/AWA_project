@@ -23,5 +23,13 @@
     "Save": "Save",
     "Edit": "Edit",
     "Send": "Send",
-    "Refresh": "Refresh"
+    "Refresh": "Refresh",
+    "Welcome": "Welcome",
+    "Hello please log in or register to use the site": "Hello please log in or register to use the site",
+    "Start swiping in this page": "Start swiping in this page",
+    "Password requirements:": "Password requirements:",
+    "At least 8 characters": "At least 8 characters",
+    "At least one uppercase letter": "At least one uppercase letter",
+    "At least one lowercase letter": "At least one lowercase letter",
+    "At least one number": "At least one number"
 }

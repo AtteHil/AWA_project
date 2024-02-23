@@ -8,6 +8,16 @@ const loginform = () => {
     const { t, i18n } = useTranslation();
 
 
+    const emailErrorMessages: { [key: string]: string } = {
+        en: "No user with this email",
+        fi: "Tällä sähköpostilla ei ole käyttäjää."
+    }
+
+    const passwordErrorMessages: { [key: string]: string } = {
+        en: "Password doesn't match",
+        fi: "Salasana on väärä"
+    }
+
     const loginFunction = async () => {// logging in to existing user
         interface Data { // interface for the return data of the fetch
             message?: string
@@ -29,7 +39,14 @@ const loginform = () => {
                 });
                 if (response.status == 403) { // incorrect credentials: password | email
                     const missing: Data = await response.json()
-                    alert(missing.message);
+                    const currentLanguage: string = i18n.language
+
+                    if (missing.message == "password") {
+                        alert(passwordErrorMessages[currentLanguage]);
+                    }
+                    else if (missing.message == "email") {
+                        alert(emailErrorMessages[currentLanguage]);
+                    }
 
                 }
                 if (response.ok) {

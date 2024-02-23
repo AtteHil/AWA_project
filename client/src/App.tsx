@@ -10,6 +10,7 @@ import Register from "./components/register"
 import Cards from "./components/cards"
 import Chats from "./components/chat"
 import Profile from "./components/profile"
+import Homepage from "./components/homepage"
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 
 function App() { // basic app desing and routes route different connections to pages with right components
@@ -22,7 +23,7 @@ function App() { // basic app desing and routes route different connections to p
         <Routes>
           <Route path='/Profile' element={<><Header /><Profile /></>}></Route>
           <Route path="/Swipe" element={<><Header /><Cards /></>}> </Route>
-          <Route path="/" element={<Header />}></Route>
+          <Route path="/" element={<><Header /><Homepage /></>}></Route>
           <Route path="/chat" element={<><Header /><Chats /></>}></Route>
           <Route path="/login" element={<><Header /><Login /></>}></Route>
           <Route path="/register" element={<><Header /><Register /></>}></Route>

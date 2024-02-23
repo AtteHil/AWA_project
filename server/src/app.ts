@@ -79,7 +79,7 @@ app.post("/login", async (req: Request, res: Response) => { // login function to
     const existingUser: IUser | null = await User.findOne({ email: email })
 
     if (!existingUser) {
-      return res.status(403).send({ message: "No user with this email" })
+      return res.status(403).send({ message: "email" })
     } else {
       if (bcrypt.compareSync(password, existingUser.password)) {//compareSync because want to use async found here https://stackoverflow.com/questions/69324159/bcrypt-compare-or-bcrypt-comparesync
         const jwtPayload: JwtPayload = {
@@ -89,7 +89,7 @@ app.post("/login", async (req: Request, res: Response) => { // login function to
         const token: string = jwt.sign(jwtPayload, process.env.SECRET as string, { expiresIn: '30m' }); // make token for user to store in client side browser
         return res.status(200).send({ success: true, token })  // send token and success message to client side
       } else {
-        return res.status(403).send({ message: "Incorrect password" });
+        return res.status(403).send({ message: "password" });
       }
     }
   }
@@ -103,10 +103,10 @@ app.post("/login", async (req: Request, res: Response) => { // login function to
 
 
 
-app.get("/Profile", validate, async (req: Request, res: Response) => { // checks that user is logged in
+app.get("/Profile", validate, async (req: Request, res: Response) => { // checks that user is logged in and return the profile which can be used in frontpage
   if (req.user) {
     const user: Profile = req.user as Profile
-    return (res.status(200).send({ user }))
+    return (res.status(200).send(user))
   }
   else {
     return (res.status(401).send("UnAuhtorized"))
@@ -216,7 +216,6 @@ app.post("/message", validate, async (req: Request, res: Response) => { // pushe
         { $push: { chatLog: { userId: userID, message: message, date: date } } },
         { new: true }
       )
-      // console.log(chatLogs)
       return res.json({ chatLogs });
     }
     catch (error) {

@@ -11,6 +11,11 @@
 
 }
 
+.requirements {
+    margin-top: 5px;
+    font-size: 11px;
+}
+
 .Form>input {
     max-width: 250px;
     width: 100%;
