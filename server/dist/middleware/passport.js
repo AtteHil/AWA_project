@@ -8,7 +8,7 @@ const passport_jwt_1 = require("passport-jwt");
 const Users_1 = require("../models/Users");
 const dotenv_1 = __importDefault(require("dotenv"));
 dotenv_1.default.config();
-passport_1.default.initialize(); // got help to turn weekly task passport to TypeScript from Aleksi Haapalainen
+passport_1.default.initialize();
 const jwtOptions = {
     jwtFromRequest: passport_jwt_1.ExtractJwt.fromAuthHeaderAsBearerToken(),
     secretOrKey: process.env.SECRET, // use secret from .env file (User has to set this .env file with SECRET=*Your own secret string*)

@@ -15,6 +15,10 @@ export const registrationErrorMessages: { [key: string]: string } = {
     en: "Error while creating profile. Check your credentials",
     fi: "Käyttäjän luonti ei onnistunut. Tarkista antamasi tiedot"
 }
+export const registrationFieldFillMessage: { [key: string]: string } = {
+    en: "You have to fill every field",
+    fi: "Kaikki kentät on täytettävät"
+}
 export const loginEmailErrorMessages: { [key: string]: string } = {
     en: "No user with this email",
     fi: "Tällä sähköpostilla ei ole käyttäjää."

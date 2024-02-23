@@ -5,7 +5,7 @@ import { User, IUser } from "../models/Users";
 import dotenv from "dotenv";
 
 dotenv.config();
-passport.initialize(); // got help to turn weekly task passport to TypeScript from Aleksi Haapalainen
+passport.initialize();
 
 const jwtOptions: StrategyOptions = { //token options set
     jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),

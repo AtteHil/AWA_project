@@ -7,7 +7,7 @@ import { Match, IMatches } from './models/Matches'
 import bcrypt from 'bcrypt'
 import validate from "./middleware/validator"
 import dotenv from "dotenv"
-import { validateEmail, validatePassword } from './validators/CredentialsValidator'
+import { validateEmail, validateNewPassword, validatePassword } from './validators/CredentialsValidator'
 import { Result, ValidationError, validationResult } from 'express-validator'
 
 dotenv.config();
@@ -120,7 +120,6 @@ app.get("/Profile", validate, async (req: Request, res: Response) => { // checks
 app.post("/fetchUsers", validate, async (req: Request, res: Response) => { // function to fetch users from database to to user to swipe
   const user: Profile = req.user as Profile
   if (req.user) {
-    // const loggedInUserId: string = (req.user as {_id: string})._id; 
     const loggedUser: Profile = await User.findById(user.id) as Profile
     try {
       const otherUsers: IUser[] = await User
@@ -132,7 +131,7 @@ app.post("/fetchUsers", validate, async (req: Request, res: Response) => { // fu
         })
         .select('username information registerationdate _id')
 
-        .limit(50)
+        .limit(50) // fetch max 50 users
         .exec();
 
       res.status(200).json(otherUsers);
@@ -197,7 +196,7 @@ app.post("/ChatLogs", validate, async (req: Request, res: Response) => { // get'
         { userTwo: userID }
       ]
     })
-    return res.send({ chatLogs, userID }) // send chatlogs and user id for checking message sender in front
+    return res.send({ chatLogs, userID }) // send chatlogs and user id for checking message sender in frontend
   }
 
 })
@@ -225,7 +224,12 @@ app.post("/message", validate, async (req: Request, res: Response) => { // pushe
   }
 })
 
-app.post("/updateUser", validate, async (req: Request, res: Response) => { // update user with given information
+app.post("/updateUser", validate, validateEmail, validateNewPassword, async (req: Request, res: Response) => { // update user with given information
+  const errors: Result<ValidationError> = validationResult(req) // validaion results from email and password validator
+
+  if (!errors.isEmpty()) {
+    return res.status(401).json({ errors: errors.array() })
+  }
   const { email, username, password, information, newPassword }: { email: String, username: string, password: string, information: String, newPassword: string | null } = req.body
   if (req.user) {
     const user: Profile = req.user as Profile
@@ -244,7 +248,15 @@ app.post("/updateUser", validate, async (req: Request, res: Response) => { // up
         updateFields,
         { new: true }
       );
-      res.status(200).json(updatedUser);
+      await Match.updateMany( // update the matches username where this user is
+        { userOne: user.id },
+        { $set: { userNameOne: updateFields.username } }
+      );
+      await Match.updateMany(
+        { userTwo: user.id },
+        { $set: { userNameTwo: updateFields.username } }
+      );
+      res.status(200).json(updatedUser); // send back updated user information
     } else { res.status(401).send("Wrong password") }
   }
   else {

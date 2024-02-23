@@ -96,7 +96,6 @@ app.get("/Profile", validator_1.default, async (req, res) => {
 app.post("/fetchUsers", validator_1.default, async (req, res) => {
     const user = req.user;
     if (req.user) {
-        // const loggedInUserId: string = (req.user as {_id: string})._id; 
         const loggedUser = await Users_1.User.findById(user.id);
         try {
             const otherUsers = await Users_1.User
@@ -107,7 +106,7 @@ app.post("/fetchUsers", validator_1.default, async (req, res) => {
                 } // Exclude users whose IDs are in the liked array
             })
                 .select('username information registerationdate _id')
-                .limit(50)
+                .limit(50) // fetch max 50 users
                 .exec();
             res.status(200).json(otherUsers);
         }
@@ -161,7 +160,7 @@ app.post("/ChatLogs", validator_1.default, async (req, res) => {
                 { userTwo: userID }
             ]
         });
-        return res.send({ chatLogs, userID }); // send chatlogs and user id for checking message sender in front
+        return res.send({ chatLogs, userID }); // send chatlogs and user id for checking message sender in frontend
     }
 });
 app.post("/message", validator_1.default, async (req, res) => {
@@ -178,7 +177,11 @@ app.post("/message", validator_1.default, async (req, res) => {
         }
     }
 });
-app.post("/updateUser", validator_1.default, async (req, res) => {
+app.post("/updateUser", validator_1.default, CredentialsValidator_1.validateEmail, CredentialsValidator_1.validateNewPassword, async (req, res) => {
+    const errors = (0, express_validator_1.validationResult)(req); // validaion results from email and password validator
+    if (!errors.isEmpty()) {
+        return res.status(401).json({ errors: errors.array() });
+    }
     const { email, username, password, information, newPassword } = req.body;
     if (req.user) {
         const user = req.user;
@@ -193,7 +196,10 @@ app.post("/updateUser", validator_1.default, async (req, res) => {
                 updateFields.password = newHash; // old password must be same so updates can be done safely.
             }
             const updatedUser = await Users_1.User.findByIdAndUpdate(user.id, updateFields, { new: true });
-            res.status(200).json(updatedUser);
+            await Matches_1.Match.updateMany(// update the matches username where this user is
+            { userOne: user.id }, { $set: { userNameOne: updateFields.username } });
+            await Matches_1.Match.updateMany({ userTwo: user.id }, { $set: { userNameTwo: updateFields.username } });
+            res.status(200).json(updatedUser); // send back updated user information
         }
         else {
             res.status(401).send("Wrong password");

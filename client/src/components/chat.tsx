@@ -9,6 +9,13 @@ interface Message {
     message: string;
     date: Date;
 }
+interface ChatLog {
+    _id: string;
+    userOne: string;
+    userNameOne: string;
+    userTwo: string;
+    userNameTwo: string;
+}
 const loadChats = () => {
 
     const [chatLogs, setChatLogs] = useState<any>([]);
@@ -28,7 +35,7 @@ const loadChats = () => {
 
         if (chatLogs.length != 0) {
             setChatID(chatLogs.chatLogs[currentIndex]._id);
-            console.log(chatLogs.chatLogs.length)
+
             const messagesArray = chatLogs.chatLogs[currentIndex].chatLog.map((messageObj: Message) => ({ // make messages from data fecthed
                 position: messageObj.userId === chatLogs.userID ? 'right' : 'left',
                 type: 'text',
@@ -88,10 +95,10 @@ const loadChats = () => {
                         }));
                         if (data.chatLogs[currentIndex].userOne === data.userID) {
                             setUser(data.chatLogs[currentIndex].userNameTwo);
-                            setOwn(data.chatLogs[currentIndex].userNameOne)
+                            setOwn(data.chatLogs[currentIndex].userOne)
                         } else {
                             setUser(data.chatLogs[currentIndex].userNameOne);
-                            setOwn(data.chatLogs[currentIndex].userNameTwo)
+                            setOwn(data.chatLogs[currentIndex].userTwo)
                         }
                         setMessages(messagesArray);
 
@@ -106,15 +113,23 @@ const loadChats = () => {
     };
     const getChatLogs = async () => { // simple function to fetch chatLogs
         fetchChat();
+
     };
     const makeChatButtons = (chatLogs: any) => { //make buttons for each chat to open the selected chat
 
         return chatLogs.map((chatLog: any, index: number) => {
-            const otherUserName = chatLog.usernameOne === own ? chatLog.userNameTwo : chatLog.userNameOne;
+
+            let otherUserName
+            if (chatLog.userOne === own) {
+                otherUserName = chatLog.userNameTwo
+            } else if (chatLog.userTwo === own) {
+                otherUserName = chatLog.userNameOne
+            }
+
             return (
 
                 <button key={index} onClick={() => { setIndex(index); }}>
-                    {`${otherUserName}`}
+                    {otherUserName}
                 </button>
             );
         });

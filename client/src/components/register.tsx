@@ -1,9 +1,9 @@
-import React, { useState, useEffect } from 'react';
-import { BrowserRouter as Router, Routes, Route, Link as RouterLink, Link } from 'react-router-dom';
+import { useState, useEffect } from 'react';
+import { Link } from 'react-router-dom';
 import { format } from 'date-fns';
 import "../css/Register.css"
 import { useTranslation } from 'react-i18next';
-import { registrationErrorMessages, registrationSuccessMessages } from './Messages';
+import { registrationErrorMessages, registrationSuccessMessages, registrationFieldFillMessage } from './Messages';
 // password requirements show on hover help looked from this site:
 //https://plainenglish.io/blog/how-to-handle-mouse-hover-events-in-react
 
@@ -27,7 +27,8 @@ const registerform = () => {
   }, []);
   const registerFunction = async () => { // function to register new user
     if (email == "" && password == "" && information == "" && registrationdate == "" && username == "") {
-      alert("you have to fill every field");
+      const currentLanguage = i18n.language
+      alert(registrationFieldFillMessage[currentLanguage]);
     } else {
 
 

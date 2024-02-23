@@ -6,7 +6,7 @@ interface IUser extends Document {
     username: string,
     password: string,
     information: string, // Bio
-    registerationdate: string, // dregistration date
+    registerationdate: string, // registration date
     liked: string[] // store liked users to array
 }
 

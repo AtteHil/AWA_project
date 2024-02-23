@@ -102,7 +102,7 @@ const registerform = () => {
       {isEditing ? (<input type="text" id="password" placeholder='old password' autoComplete='off' onChange={(e) => setPassword(e.target.value)} />) : (<p style={{ display: 'inline' }}>***</p>)}
 
       <br />
-      {isEditing ? (<div><label htmlFor="password">{t('New Password *Optional')}: </label><input type="text" id="newPassword" placeholder='new password' autoComplete='off' onChange={(e) => setNewPassword(e.target.value)} /></div>) : null}
+      {isEditing ? (<div><label htmlFor="password">{t('New Password')}: </label><input type="text" id="newPassword" placeholder='new password' autoComplete='off' onChange={(e) => setNewPassword(e.target.value)} /></div>) : null}
       <label htmlFor="information"> Bio: </label>
 
       {isEditing ? (<div style={{ display: 'inline' }}>
