@@ -52,7 +52,7 @@ const registerform = () => {
           alert(successMessages[currentLanguage])
           window.location.replace("/login")
 
-        } else { //registration unsuccesfull more detailed answer later
+        } else { //registration unsuccesfull 
           const currentLanguage = i18n.language
           alert(errorMessages[currentLanguage])
           console.error('Registration failed');

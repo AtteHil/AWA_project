@@ -13,6 +13,14 @@ const registerform = () => {
   const [username, setUsername] = useState<string>('');
   const token: String | null = localStorage.getItem("auth_token");
   const { t, i18n } = useTranslation();
+  const ErrorMessages: { [key: string]: string } = {
+    en: "You must fill everything except new password",
+    fi: "Kaikki muut kentät ovat pakollisia, paitsi uusi salasana"
+  }
+  const successMessages: { [key: string]: string } = {
+    en: "User updated. Please login again",
+    fi: "Tiedot päivitetty. Ole hyvä ja kirjaudu uudestaan."
+  }
   useEffect(() => {
     if (token) {
       const fetchUser = async (): Promise<void> => {
@@ -30,11 +38,11 @@ const registerform = () => {
             window.location.replace("/login");
           }
           if (response.ok) {
-            const data = await response.json()
+            const user = await response.json()
 
-            setEmail(data.user.email);
-            setInformation(data.user.information);
-            setUsername(data.user.username);
+            setEmail(user.email);
+            setInformation(user.information);
+            setUsername(user.username);
 
 
           } else { //update unsuccesfull more detailed answer later
@@ -53,7 +61,9 @@ const registerform = () => {
 
   const UpdateUser = async () => { // function to update new user
     if (email === "" || password === "" || information === "" || username === "") {
-      alert("You have to fill every field");
+      const currentLanguage = i18n.language;
+
+      alert(ErrorMessages[currentLanguage]);
     } else {
 
 
@@ -69,7 +79,9 @@ const registerform = () => {
         });
 
         if (response.ok) {
-          alert("User updated. Please login again");
+          const currentLanguage = i18n.language;
+
+          alert(successMessages[currentLanguage]);
           window.localStorage.removeItem("auth_token");
           window.location.replace('/login');
 

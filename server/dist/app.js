@@ -29,7 +29,7 @@ app.listen(port, () => {
     console.log(`App listening at http://localhost:${port}`);
 });
 app.post("/register", CredentialsValidator_1.validateEmail, CredentialsValidator_1.validatePassword, async (req, res) => {
-    const errors = (0, express_validator_1.validationResult)(req);
+    const errors = (0, express_validator_1.validationResult)(req); // validaion results from email and password validator
     if (!errors.isEmpty()) {
         return res.status(401).json({ errors: errors.array() });
     }
@@ -71,7 +71,7 @@ app.post("/login", async (req, res) => {
                     id: existingUser._id,
                     email: existingUser.email
                 };
-                const token = jsonwebtoken_1.default.sign(jwtPayload, process.env.SECRET, { expiresIn: '30m' }); // make token for user to store in client side browser
+                const token = jsonwebtoken_1.default.sign(jwtPayload, process.env.SECRET, { expiresIn: '30m' }); // make token for user to store in client side browser. Token expires in 30 minutes
                 return res.status(200).send({ success: true, token }); // send token and success message to client side
             }
             else {
@@ -172,7 +172,7 @@ app.post("/message", validator_1.default, async (req, res) => {
         const userID = user.id;
         try {
             const chatLogs = await Matches_1.Match.findByIdAndUpdate(chatID, { $push: { chatLog: { userId: userID, message: message, date: date } } }, { new: true });
-            return res.json({ chatLogs });
+            return res.json({ chatLogs }); // send back the new chatlog which can be updated to show on the front.
         }
         catch (error) {
         }
@@ -190,7 +190,7 @@ app.post("/updateUser", validator_1.default, async (req, res) => {
             }
             const updateFields = { email, username, information };
             if (newHash) {
-                updateFields.password = newHash;
+                updateFields.password = newHash; // old password must be same so updates can be done safely.
             }
             const updatedUser = await Users_1.User.findByIdAndUpdate(user.id, updateFields, { new: true });
             res.status(200).json(updatedUser);

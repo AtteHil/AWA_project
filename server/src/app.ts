@@ -38,7 +38,7 @@ app.listen(port, () => {
 
 
 app.post("/register", validateEmail, validatePassword, async (req: Request, res: Response) => { // function to register new user and add them to mongoDB
-  const errors: Result<ValidationError> = validationResult(req)
+  const errors: Result<ValidationError> = validationResult(req) // validaion results from email and password validator
 
   if (!errors.isEmpty()) {
     return res.status(401).json({ errors: errors.array() })
@@ -86,7 +86,7 @@ app.post("/login", async (req: Request, res: Response) => { // login function to
           id: existingUser._id,
           email: existingUser.email
         }
-        const token: string = jwt.sign(jwtPayload, process.env.SECRET as string, { expiresIn: '30m' }); // make token for user to store in client side browser
+        const token: string = jwt.sign(jwtPayload, process.env.SECRET as string, { expiresIn: '30m' }); // make token for user to store in client side browser. Token expires in 30 minutes
         return res.status(200).send({ success: true, token })  // send token and success message to client side
       } else {
         return res.status(403).send({ message: "password" });
@@ -216,7 +216,7 @@ app.post("/message", validate, async (req: Request, res: Response) => { // pushe
         { $push: { chatLog: { userId: userID, message: message, date: date } } },
         { new: true }
       )
-      return res.json({ chatLogs });
+      return res.json({ chatLogs }); // send back the new chatlog which can be updated to show on the front.
     }
     catch (error) {
 
@@ -237,7 +237,7 @@ app.post("/updateUser", validate, async (req: Request, res: Response) => { // up
       }
       const updateFields: any = { email, username, information };
       if (newHash) {
-        updateFields.password = newHash;
+        updateFields.password = newHash; // old password must be same so updates can be done safely.
       }
 
       const updatedUser = await User.findByIdAndUpdate(user.id,

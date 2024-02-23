@@ -57,7 +57,7 @@ const loginform = () => {
                     const data: Data = await response.json()
 
                     if (data.token) {
-                        window.localStorage.setItem("auth_token", data.token) // store token to localstorage of the browser
+                        window.localStorage.setItem("auth_token", data.token) // store token to localstorage of the browser for other pages to use it and user doesn't have to log in again
                     }
                     window.location.replace("/");// redirect to mainpage
                 }
